@@ -1,97 +1,164 @@
-### **Descripción del Proyecto**
-**Resumen:**  
-Un contenedor Docker basado en Windows Server Core que proporciona un entorno RDP (Remote Desktop Protocol) habilitado y un bot de Discord funcional. Este proyecto está diseñado para desarrolladores que necesitan un entorno aislado para compilar scripts Python en ejecutables (`exe`) mientras interactúan con un bot de Discord personalizable.
-
-**Problema que resuelve:**  
-- Proporciona un entorno Windows completamente funcional dentro de un contenedor Docker, eliminando la necesidad de configurar manualmente un servidor Windows.
-- Permite la compilación de scripts Python a ejecutables utilizando PyInstaller.
-- Ofrece un bot de Discord con comandos interactivos y personalizables.
-
-**Principales características y beneficios:**  
-- Entorno Windows con RDP habilitado para acceso remoto.
-- Bot de Discord con comandos útiles y personalizables.
-- Capacidad para compilar scripts Python a ejecutables.
-- Medidas anti-detección para evitar la identificación de virtualización.
-- Fácil de configurar y usar mediante Docker.
+## Documentación de DockerWinRDP-Guacamole
 
 ---
 
-### **Características del Proyecto**
-- **Entorno Windows con RDP habilitado:** Acceso remoto seguro a través de RDP.
-- **Bot de Discord integrado:** Comandos interactivos como `/hello`, `/menu`, `/poll`, `/avatar`, `/random`, etc.
-- **Compilación de scripts Python:** Uso de PyInstaller para convertir scripts Python en ejecutables.
-- **Medidas anti-detección:** Configuraciones adicionales para evitar la identificación de virtualización.
-- **Automatización completa:** Construcción y ejecución del contenedor mediante Docker.
-- **Personalización:** Fácil de modificar y extender con nuevos comandos o funcionalidades.
+### **Introducción**
+
+Esta documentación proporciona una guía completa y fácil de entender sobre **DockerWinRDP-Guacamole**, diseñada para usuarios de todos los niveles, desde principiantes hasta expertos. Aquí encontrarás toda la información necesaria para entender, instalar, configurar y utilizar DockerWinRDP-Guacamole.
+
+---
+
+### **Descripción del Proyecto**
+
+#### **Resumen:**
+**DockerWinRDP-Guacamole** es una solución que combina **Docker**, **Apache Guacamole** y un contenedor Windows RDP para proporcionar acceso remoto seguro a través de un navegador web. Este proyecto resuelve el problema de acceder a entornos Windows desde cualquier dispositivo con un navegador, sin necesidad de software adicional.
+
+#### **Principales características y beneficios:**
+- **Acceso remoto seguro**: Usa Apache Guacamole para acceder al escritorio remoto a través de un navegador.
+- **Automatización**: Scripts de instalación y configuración simplifican el despliegue.
+- **Personalización**: Permite configurar credenciales, conexiones RDP y MySQL según las necesidades del usuario.
+- **Escalabilidad**: Compatible con múltiples usuarios y conexiones simultáneas.
+- **Portabilidad**: Todo se ejecuta dentro de contenedores Docker, lo que facilita su implementación en diferentes sistemas.
 
 ---
 
 ### **Requisitos del Proyecto**
-**Herramientas y software necesarios:**
-- Docker Desktop (configurado para contenedores Windows).
-- Cliente RDP (por ejemplo, `rdesktop` o Microsoft Remote Desktop).
-- Python 3.x (instalado automáticamente en el contenedor).
 
-**Dependencias específicas:**
-- `discord.py`
-- `pyinstaller`
+#### **Herramientas y software necesarios:**
+1. **Sistema Operativo**: Kali Linux o cualquier distribución basada en Debian/Ubuntu.
+2. **Docker**: Instalado y configurado correctamente.
+   ```bash
+   sudo apt-get update
+   sudo apt-get install -y docker.io docker-compose
+   ```
+3. **Git**: Para clonar el repositorio.
+   ```bash
+   sudo apt-get install -y git
+   ```
+4. **Python 3.x**: Necesario para compilar el bot de Discord (opcional).
+   ```bash
+   sudo apt-get install -y python3 python3-pip
+   ```
 
 ---
 
 ### **Guía de Instalación**
-**Paso 1: Clona el repositorio**
+
+#### **Paso 1: Clona el repositorio**
+Clona el repositorio en tu máquina local:
 ```bash
-git clone https://github.com/tu-usuario/Windows-RDP-Discord-Bot.git
-cd Windows-RDP-Discord-Bot
+git clone https://github.com/tu-usuario/DockerWinRDP-Guacamole.git
+cd DockerWinRDP-Guacamole
 ```
 
-**Paso 2: Construye la imagen Docker**
+#### **Paso 2: Construcción del proyecto**
+Ejecuta el script `setup.sh` para instalar dependencias, construir el contenedor y configurar el entorno:
 ```bash
-docker build --build-arg BOT_TOKEN=your_token_here --build-arg RDP_PASSWORD=your_password_here -t windows-rdp-container .
+chmod +x setup.sh install.sh configure.sh
+./setup.sh
 ```
 
-**Paso 3: Ejecuta el contenedor**
-```bash
-docker run -d -p 3389:3389 --name windows_rdp windows-rdp-container
-```
+Durante la ejecución, el script te pedirá:
+- Credenciales para el usuario RDP (`RDP_USER` y `RDP_PASSWORD`).
+- Si deseas configurar MySQL para Guacamole (opcional).
 
-**Paso 4: Conéctate al contenedor via RDP**
-```bash
-rdesktop -u usuario_contenedor -p contrasena_segura <host-ip>:3389
-```
-
-**Paso 5: Compila el bot**
-Dentro del contenedor:
-```bash
-pyinstaller --onefile --noconfirm --clean C:/Scripts/bot.py
-```
+#### **Paso 3: Configuración inicial**
+El script `setup.sh` ejecutará automáticamente los scripts `install.sh` y `configure.sh`. Estos scripts:
+- Instalan Docker y otras dependencias.
+- Construyen el contenedor DockerWinRDP.
+- Despliegan Apache Guacamole y configuran la conexión RDP.
 
 ---
 
-### **6. Guía de Uso**
-**Comandos básicos del bot:**
-- `/hello`: Saluda al usuario con un botón interactivo.
-- `/menu`: Muestra un menú desplegable con opciones.
-- `/poll`: Crea una encuesta simple con botones "Sí" y "No".
-- `/avatar`: Obtiene el avatar de un usuario.
-- `/random`: Genera un número aleatorio entre 1 y 100.
-- `/status`: Muestra la latencia del bot.
-- `/help`: Lista todos los comandos disponibles.
+### **Guía de Uso**
 
-**Ejemplo práctico:**
+#### **Uso básico:**
+1. Accede a Guacamole en tu navegador:
+   ```
+   http://localhost:8080/guacamole
+   ```
+2. Inicia sesión con las credenciales predeterminadas:
+   - Usuario: `guacadmin`
+   - Contraseña: `guacadmin`
+
+3. Conéctate al escritorio remoto utilizando la conexión `DockerWinRDP`.
+
+#### **Ejemplo práctico:**
+Para reiniciar el contenedor desde Discord, usa el comando `/reiniciar` (requiere permisos de administrador):
 ```bash
-/poll "¿Te gusta este bot?"
+/reiniciar
 ```
+
+#### **Comandos principales:**
+- `/hello`: Saludo simple con un botón interactivo.
+- `/menu`: Muestra un menú desplegable con opciones.
+- `/status`: Verifica el estado y latencia del bot.
+- `/help`: Lista los comandos disponibles.
+- `/random`: Genera un número aleatorio entre 1 y 100.
+- `/avatar`: Obtiene el avatar de un usuario.
+- `/poll`: Crea una encuesta simple con botones "Sí" y "No".
+- `/reiniciar`: Reinicia el contenedor (solo administradores).
+- `/logs`: Envía los logs del bot al canal (solo administradores).
 
 ---
 
 ### **Documentación Técnica**
-**Arquitectura del proyecto:**
-- **Dockerfile:** Configura el entorno Windows con RDP habilitado y Python instalado.
-- **start.ps1:** Script de inicio que habilita RDP y mantiene el contenedor en ejecución.
-- **bot.py:** Código del bot de Discord con comandos interactivos.
 
-**Componentes principales:**
-- **RDP:** Acceso remoto al contenedor.
-- **Discord Bot:** Interacción con Discord mediante comandos slash.
-- **PyInstaller:** Herramienta para compilar scripts Python a ejecutables.
+#### **Arquitectura del Proyecto:**
+El proyecto utiliza una arquitectura modular basada en contenedores Docker:
+1. **DockerWinRDP**: Contenedor Windows con RDP habilitado.
+2. **Apache Guacamole**: Interfaz web para acceder al escritorio remoto.
+3. **MySQL (opcional)**: Base de datos para almacenar configuraciones y conexiones.
+4. **Bot de Discord**: Interfaz para interactuar con el sistema mediante comandos.
+
+#### **Componentes principales:**
+- **Dockerfile**: Define el contenedor DockerWinRDP.
+- **docker-compose.yml**: Configura los servicios de Guacamole, `guacd` y MySQL.
+- **bot.py**: Implementa el bot de Discord para interactuar con el sistema.
+- **start.ps1**: Script de PowerShell que mantiene el contenedor activo y configura RDP.
+
+#### **Código fuente:**
+El código está organizado en carpetas y archivos modulares:
+- **Scripts**: `setup.sh`, `install.sh`, `configure.sh` automatizan la instalación y configuración.
+- **Logs**: Carpeta `logs/` almacena los registros generados por los scripts.
+- **MySQL**: Carpeta `mysql-init/` contiene el archivo `initdb.sql` para inicializar la base de datos (si se usa MySQL).
+
+---
+
+### **Mantenimiento y Solución de Problemas**
+
+#### **Verificación de logs:**
+Para revisar los logs del proyecto:
+1. Logs del script `setup.sh`:
+   ```bash
+   cat logs/setup.log
+   ```
+2. Logs del bot de Discord:
+   ```bash
+   cat bot.log
+   ```
+3. Logs de Docker:
+   ```bash
+   docker logs <nombre-del-contenedor>
+   ```
+
+#### **Solución de problemas comunes:**
+- **Error al iniciar Docker**: Asegúrate de que Docker esté instalado y ejecutándose.
+  ```bash
+  sudo systemctl start docker
+  ```
+- **Error al conectar a Guacamole**: Verifica que los puertos no estén ocupados y que los servicios estén activos.
+  ```bash
+  docker-compose ps
+  ```
+- **Error en el bot de Discord**: Revisa que el token del bot esté configurado correctamente en las variables de entorno.
+
+---
+
+### **Conclusión**
+
+**DockerWinRDP-Guacamole** es una solución robusta y flexible para acceder remotamente a un entorno Windows desde cualquier navegador. Con esta documentación, deberías poder instalar, configurar y utilizar el proyecto sin problemas. Si tienes preguntas adicionales o encuentras errores, consulta la sección de [issues](https://github.com/tu-usuario/DockerWinRDP-Guacamole/issues) en el repositorio.
+
+--- 
+
+Espero que esta documentación sea útil y completa para tus necesidades. 😊
