@@ -28,16 +28,16 @@ Esta documentación proporciona una guía completa y fácil de entender sobre **
 1. **Sistema Operativo**: Kali Linux o cualquier distribución basada en Debian/Ubuntu.
 2. **Docker**: Instalado y configurado correctamente.
    ```bash
-   sudo apt-get update
-   sudo apt-get install -y docker.io docker-compose
+   sudo apt update
+   sudo apt install -y docker.io docker-compose
    ```
 3. **Git**: Para clonar el repositorio.
    ```bash
-   sudo apt-get install -y git
+   sudo apt install -y git
    ```
 4. **Python 3.x**: Necesario para compilar el bot de Discord (opcional).
    ```bash
-   sudo apt-get install -y python3 python3-pip
+   sudo apt install -y python3 python3-pip
    ```
 
 ---
